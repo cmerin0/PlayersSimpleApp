@@ -1,8 +1,8 @@
 from flask import Flask
 from dotenv import load_dotenv
 from .routes.auth import auth
+from .routes.teams import teams
 import os
-
 
 # Loading environment variables
 load_dotenv()
@@ -19,5 +19,6 @@ def create_app():
     
     # Importing routes from routes folder
     app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(teams, url_prefix='/api')
 
     return app

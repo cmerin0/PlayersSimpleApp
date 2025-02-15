@@ -5,7 +5,6 @@ import os
 
 # Temporary hard coded database URI
 DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI") or "mysql+pymysql://playuser:playpass@127.0.0.1:3306/soccer_db"
-print(DATABASE_URI)
 
 # Creating database engine
 engine = create_engine(DATABASE_URI)
@@ -15,4 +14,4 @@ Base.metadata.create_all(engine)
 
 # Creating session
 Session = sessionmaker(bind=engine)
-sessionmaker = Session()
+session = Session()

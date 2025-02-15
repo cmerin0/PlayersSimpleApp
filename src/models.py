@@ -24,7 +24,7 @@ class Team(Base):
     __tablename__ = 'teams'
     id = Column(Integer, primary_key=True)
     name = Column(String(100), unique=True)
-    players = relationship('Player', back_populates='team', cascade='all, delete')
+    _players = relationship('Player', cascade='all, delete')
     created_at = Column(DateTime, default=datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
     
