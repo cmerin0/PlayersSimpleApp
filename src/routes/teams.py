@@ -60,3 +60,55 @@ def get_team(_id):
     
     except Exception as e:
         return jsonify({"Error": "An Error occurred while fetching a team", "message": str(e) }), 500
+
+# Route to update a team
+@teams.route('/teams/<int:_id>', methods=['PUT'])
+def update_team(_id):
+    try:
+        # Getting data from the request
+        data = request.get_json()
+        new_name = data.get('name')
+
+        # Validating if body is properly sent
+        if not new_name:
+            return jsonify({ "message": "Not a valid object" }), 400
+
+        # Getting the selected team
+        team = session.query(Team).filter_by(id=_id).first()
+
+        # Checking if team exists
+        if not team:
+            return jsonify({ "message": "Team Not Found" }), 404
+
+        # Updating the team
+        team.name = new_name
+        session.commit()
+
+        # Returning the updated team in JSON format
+        return jsonify({ "message": "Team Updated Successfully", "Team": { "id": team.id, "name": team.name }}), 200
+    
+    except Exception as e:
+        session.rollback()
+        return jsonify({"Error": "An Error occurred while updating the team", "message": str(e) }), 500
+    
+# Route to delete a team
+@teams.route('/teams/<int:_id>', methods=['DELETE'])
+def delete_team(_id):
+    try:
+        # Getting the selected team
+        team = session.query(Team).filter_by(id=_id).first()
+
+        # Checking if team exists
+        if not team:
+            return jsonify({ "message": "Team Not Found" }), 404
+
+        # Deleting the team
+        session.delete(team)
+        session.commit()
+
+        # Returning success message
+        return jsonify({ "message": "Team Deleted Successfully" }), 200
+    
+    except Exception as e:
+        session.rollback()
+        return jsonify({"Error": "An Error occurred while deleting the team", "message": str(e) }), 500
