@@ -99,13 +99,14 @@ def get_users():
 
         # Checking if my Current Logged In User is Admin
         current_user = session.query(User).filter_by(id=current_user_id).first()
-        
+
         if not current_user.is_admin:
             return jsonify({"Error": "Forbidden Access, User is not an Admin" }), 403
 
         # Getting all users and list them
         users = session.query(User).all()
         users_list = [{"id": user.id, "username": user.username, "is_admin": user.is_admin} for user in users]
+        
         return jsonify(users_list), 200
     except Exception as e:
         return jsonify({"Error": "An Error occurred while fetching users", "message": str(e)}), 500

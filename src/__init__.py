@@ -3,6 +3,7 @@ from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 from .routes.auth import auth
 from .routes.teams import teams
+from .routes.players import players
 import os
 
 # Loading environment variables
@@ -26,5 +27,6 @@ def create_app():
     # Importing routes from routes folder
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(teams, url_prefix='/api')
+    app.register_blueprint(players, url_prefix='/api')
 
     return app
