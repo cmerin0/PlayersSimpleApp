@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Lionel Messi",
+        "team_id": 2  
+    },
+    {
+        "name": "Cristiano Ronaldo",
+        "team_id": 3  
+    },
+    {
+        "name": "Kylian Mbappé",
+        "team_id": 7  
+    },
+    {
+        "name": "Erling Haaland",
+        "team_id": 3  
+    },
+    {
+        "name": "Robert Lewandowski",
+        "team_id": 2  
+    },
+    {
+        "name": "Kevin De Bruyne",
+        "team_id": 3  
+    },
+    {
+        "name": "Mohamed Salah",
+        "team_id": 4  
+    },
+    {
+        "name": "Sadio Mané",
+        "team_id": 5  
+    },
+    {
+        "name": "Vinícius Júnior",
+        "team_id": 1 
+    },
+    {
+        "name": "Jude Bellingham",
+        "team_id": 1  
+    }
+]

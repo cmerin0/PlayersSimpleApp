@@ -12,10 +12,7 @@ def get_teams():
     try:
         # Getting all teams from the database
         teams = session.query(Team).all()
-        teams_data = [{
-            "id": team.id,
-            "name": team.name
-        } for team in teams]
+        teams_data = [team.to_dict() for team in teams]
 
         # Returning all teams in JSON format
         return jsonify({ "data": teams_data, "source": "database"}), 200
@@ -113,3 +110,22 @@ def delete_team(_id):
     except Exception as e:
         session.rollback()
         return jsonify({"Error": "An Error occurred while deleting the team", "message": str(e) }), 500
+    
+# Route to get all teams and their respective players
+@teams.route('/teams/players', methods=['GET'])
+def get_teams_and_players():
+    try:
+        # Getting all teams from the database
+        teams = session.query(Team).all()
+        team_list = []
+        for team in teams:
+            players = [player.to_dict() for player in team.player]
+            team_data = team.to_dict()
+            team_data["players"] = players
+            team_list.append(team_data)
+
+        # Returning all teams in JSON format
+        return jsonify({ "data": team_list, "source": "database"}), 200
+    
+    except Exception as e:
+        return jsonify({"Error": "An Error occurred while fetching teams", "message": str(e) }), 500

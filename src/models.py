@@ -17,19 +17,25 @@ class User(Base):
     updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     def __repr__(self):
-        return f'<User {self.username}>'
+        return f'<User {self.username}, Is_Admin {self.is_admin}>'
     
 # Creating Team Model for database 
 class Team(Base):
     __tablename__ = 'teams'
     id = Column(Integer, primary_key=True)
     name = Column(String(100), unique=True)
-    _players = relationship('Player', cascade='all, delete')
+    player = relationship('Player', back_populates="team", cascade='all, delete')
     created_at = Column(DateTime, default=datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
     
     def __repr__(self):
         return f'<Team {self.name}>'
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name
+        }
     
 # Creating Player Model for database
 class Player(Base):
@@ -37,8 +43,17 @@ class Player(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
     team_id = Column(Integer, ForeignKey('teams.id'))
+    team = relationship("Team", back_populates="player")
     created_at = Column(DateTime, default=datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
     
     def __repr__(self):
         return f'<Player {self.name}>'
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'team': self.team.name
+        }
+    

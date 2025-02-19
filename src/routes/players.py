@@ -13,11 +13,7 @@ def get_players():
         # Getting all players from the database
         players = session.query(Player).all()
 
-        players_data = [{
-            "id" : player.id,
-            "name": player.name,
-            "team_id": player.team_id
-        } for player in players]
+        players_data = [player.to_dict() for player in players]
 
         # Returning all players in JSON format
         return jsonify({ "data": players_data, "source": "database"}), 200
