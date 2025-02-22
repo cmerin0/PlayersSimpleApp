@@ -28,6 +28,10 @@ def create_team():
         data = request.get_json()
         name = data.get('name')
 
+        # Cheching if the field name is in the json sent
+        if name is None:
+            return jsonify({ "message": "The team name is invalid"}), 400
+
         # Creating a new team
         team = Team(name=name)
         session.add(team)
