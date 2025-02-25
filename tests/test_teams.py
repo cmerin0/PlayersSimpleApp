@@ -108,7 +108,7 @@ def test_delete_team(client, insert_team):
     data = json.loads(response.data)
     assert data.get("message") == "Team Deleted Successfully"
 
-# Testing Error Handling in the Requests 
+# SECTION: Testing Error Handling in the Requests 
 
 # Testing exception when team is not found [404]
 def test_exception_get_team(client):
@@ -156,3 +156,77 @@ def test_exception_delete_team_invalid_id(client):
 
     # Assert that get the server error 404 team not found
     assert response.status_code == 404
+
+# SECTION: Testing Database Errors or Errors coming from Server [500]
+
+# Testing exception error when getting teams
+def test_database_error_get_teams(client):
+    _error = "Simulated database error"
+    # Mock the database session to raise an exception
+    with patch('src.db.session.query') as mock_query:
+        # Make the add function raise an exception
+        mock_query.side_effect = Exception(_error) 
+
+        response = client.get('/api/teams')
+
+        assert response.status_code == 500
+        response_data = json.loads(response.data)
+        assert _error in response_data.get("message")
+
+# Testing exception error in server 500s
+def test_database_error_create_team(client):
+    _error = "Simulated database error"
+    # Mock the database session to raise an exception
+    with patch('src.db.session.add') as mock_add:
+        # Make the add function raise an exception
+        mock_add.side_effect = Exception(_error) 
+
+        data = {'name': 'Test Team'}
+        response = client.post('/api/teams', json=data)
+
+        assert response.status_code == 500
+        response_data = json.loads(response.data)
+        assert _error in response_data.get("message")
+
+# Testing exception error when getting a single team
+def test_database_error_get_team(client):
+    _error = "Simulated database error"
+    # Mock the database session to raise an exception
+    with patch('src.db.session.query') as mock_query:
+        # Make the query function raise an exception
+        mock_query.side_effect = Exception(_error) 
+
+        response = client.get('/api/teams/1')
+
+        assert response.status_code == 500
+        response_data = json.loads(response.data)
+        assert _error in response_data.get("message")
+
+# Testing exception error when updating teams
+def test_database_error_update_team(client):
+    _error = "Simulated database error"
+    # Mock the database session to raise an exception
+    with patch('src.db.session.commit') as mock_commit:
+        # Make the query function raise an exception
+        mock_commit.side_effect = Exception(_error) 
+
+        data = {'name': 'Updated Team'}
+        response = client.put('/api/teams/1', json=data)
+
+        assert response.status_code == 500
+        response_data = json.loads(response.data)
+        assert _error in response_data.get("message")
+
+# Testing exception error when deleting teams
+def test_database_error_delete_team(client):
+    _error = "Simulated database error"
+    # Mock the database session to raise an exception
+    with patch('src.db.session.delete') as mock_delete:
+        # Make the query function raise an exception
+        mock_delete.side_effect = Exception(_error) 
+
+        response = client.delete('/api/teams/1')
+
+        assert response.status_code == 500
+        response_data = json.loads(response.data)
+        assert _error in response_data.get("message")
