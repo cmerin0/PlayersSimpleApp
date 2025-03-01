@@ -41,6 +41,7 @@ def test_login_user(client):
     # Requesting to login endpoint sending payload
     response = client.post("/login", json = { "username": _username, "password": _password})
     data = json.loads(response.data)
+    print(data)
 
     # Asserts to verify the everything was successful
     assert response.status_code == 200
