@@ -31,7 +31,8 @@ def test_register_user(client):
 # Test loging in an User [POST /login {username, password}]
 def test_login_user(client):
     # Inserting a valid unique User and Password
-    _username = f"User_{uuid.uuid4()}"
+    _uniqueid = (uuid.uuid4().int % 999999) + 1 # geberate a random number between 1 and 1e7
+    _username = f"User_{ _uniqueid }"
     _password = "TestingPassword"
     hashed_password = generate_password_hash(_password, method="pbkdf2:sha256")
     new_user = User(username=_username, password=hashed_password, is_admin=False)
@@ -41,7 +42,6 @@ def test_login_user(client):
     # Requesting to login endpoint sending payload
     response = client.post("/login", json = { "username": _username, "password": _password})
     data = json.loads(response.data)
-    print(data)
 
     # Asserts to verify the everything was successful
     assert response.status_code == 200
