@@ -4,7 +4,7 @@ import uuid
 from main import app
 from unittest.mock import patch
 from src.db import session
-from src.models import Player
+from src.models import Player, Team
 
 # Create a test client to use the app
 @pytest.fixture
@@ -12,12 +12,25 @@ def client():
     with app.test_client() as client:
         yield client
 
+@pytest.fixture(scope="module", autouse=True)
+def insert_team():
+    _uid = (uuid.uuid4().int % 9999) + 1
+    team_name = f"Team_{_uid}"
+    team = Team(name = team_name) # This is going to be the team for all the players
+    session.add(team)
+    session.commit()
+    team_id = session.query(Team).filter_by(name=team_name).first().id # Getting the team id of inserted team
+    yield team_id
+
 # Fixture to insert a single player in the database as sample
 @pytest.fixture
-def insert_player():
-    _id = (uuid.uuid4().int % 999999) + 1 # generate a random number between 1 and 1e7
-    player_name = f"Player_{_id}"
-    player = Player(name = player_name, team_id = 1)
+def insert_player(insert_team):
+    _uid = (uuid.uuid4().int % 999999) + 1 # generate a random number between 1 and 1e7
+    _team_id = insert_team
+    player_name = f"Player_{_uid}"
+    
+    # Inserting player in the database
+    player = Player(name = player_name, team_id = _team_id)
     session.add(player)
     session.commit()
     yield player_name
@@ -60,11 +73,12 @@ def test_get_player(client, insert_player):
 
 
 # Testing get players [POST /players endpoint]
-def test_create_player(client):
+def test_create_player(client, insert_team):
     # Creating unique player name
-    _id = (uuid.uuid4().int % 999999) + 1 
+    _id = (uuid.uuid4().int % 999999) + 1
+    _team_id = insert_team 
     player_name = f"Player_{_id}" 
-    response = client.post("/api/players", json={ "name": player_name, "team_id": 1 })
+    response = client.post("/api/players", json={ "name": player_name, "team_id": _team_id })
 
     # Verifying it was inserted properly
     assert response.status_code == 200
