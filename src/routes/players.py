@@ -11,7 +11,6 @@ def get_players():
     try:
         # Getting all players from the database
         players = session.query(Player).all()
-
         players_data = [player.to_dict() for player in players]
 
         # Returning all players in JSON format
@@ -29,7 +28,7 @@ def get_player(_id):
 
         # Verifying if user exists 
         if not player:
-            return jsonify({ "message": "Player not Found" }), 404
+            return jsonify({ "message": "Player Not Found" }), 404
         
         # Getting team name instead of displaying team id
         team = session.query(Team).filter_by(id=player.team_id).first()
@@ -39,7 +38,7 @@ def get_player(_id):
         return jsonify({ "data": player_data, "source": "database" }), 200
 
     except Exception as e:
-        return jsonify({ "Message" : "Error fetching the player", "Error" : str(e) }), 500
+        return jsonify({ "error" : "Error fetching the player", "message" : str(e) }), 500
 
 # Creating a new player
 @players.route("/players", methods=["POST"])
@@ -51,20 +50,24 @@ def create_player():
     name = data.get("name")
 
     try:
+        # Checking if the name is empty
+        if name is None or team_id is None:
+            return jsonify({ "message": "Bad Request: Player name and Team are required"}), 400
+
         # Checking if team exists before inserting 
         team = session.query(Team).filter_by(id=team_id).first()
         if not team: 
-            return jsonify({ "Message": "Player cannot be inserted since Team does not Exist"}), 400 
+            return jsonify({ "message": "Player cannot be inserted since Team does not exist"}), 400 
         
         # Inserting new player if everything is correct
         new_player = Player(name=name, team_id=team_id)
         session.add(new_player)
         session.commit()
-        return jsonify({ "Message": "Player created successfully" }), 200
+        return jsonify({ "message": "Player created successfully" }), 200
         
     except Exception as e:
         session.rollback()
-        return jsonify({ "Message": "Error inserting a new player", "Error": str(e) }), 500
+        return jsonify({ "error": "Error inserting a new player", "message": str(e) }), 500
     
 # Route to update a Player 
 @players.route("/players/<int:_id>", methods=["PUT"])
@@ -76,22 +79,24 @@ def update_player(_id):
     try:
         # Getting information about the player
         player = session.query(Player).filter_by(id=_id).first()
+        if not player:
+            return jsonify({ "message": "Player Not Found"}), 404
 
         # Checking if the new team exists before inserting 
         team = session.query(Team).filter_by(id=team_id).first()
         if not team: 
-            return jsonify({ "Message": "Player cannot be updated since Team does not Exist"}), 400 
+            return jsonify({ "message": "Player cannot be updated since Team does not exist"}), 400 
         
         # Updating the current player
         player.name = data.get("name")
         player.team_id = team_id
         session.commit()
 
-        return jsonify({ "Message": "Player updated successfully" }), 200
+        return jsonify({ "message": "Player updated successfully" }), 200
         
     except Exception as e:
         session.rollback()
-        return jsonify({ "Message": "Error updating the player", "Error": str(e) }), 500
+        return jsonify({ "error": "Error updating the player", "message": str(e) }), 500
     
 @players.route("/players/<int:_id>", methods=["DELETE"])
 def delete_player(_id):
@@ -99,13 +104,13 @@ def delete_player(_id):
         # Getting the player to delete
         player = session.query(Player).filter_by(id=_id).first()
         if not player: 
-            return jsonify({ "Message": "Player does not exists"}), 400 
+            return jsonify({ "message": "Player Not Found"}), 404
 
         # Deleting player
         session.delete(player)
         session.commit()
-        return jsonify({ "Message": "Player deleted successfully"}), 200
+        return jsonify({ "message": "Player deleted successfully"}), 200
 
     except Exception as e:
         session.rollback()
-        return jsonify({ "Message": "Error deleting the player", "Error": str(e) }), 500
+        return jsonify({ "error": "Error deleting the player", "message": str(e) }), 500
