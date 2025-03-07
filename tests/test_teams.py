@@ -122,7 +122,7 @@ def test_exception_get_team(client):
     data = json.loads(response.data)
     assert "Not Found" in data.get("message")
 
-# Testing exception when team is created [500]
+# Testing exception when team is created [400]
 def test_exception_create_team(client):
     # Inserting the new team through the endpoint
     response = client.post("/api/teams", json={ "wrong_field": "wrong_name" })
@@ -206,6 +206,7 @@ def test_database_error_get_team(client):
 def test_database_error_update_team(client):
     _error = "Simulated database error"
     # Mock the database session to raise an exception
+    
     with patch('src.db.session.commit') as mock_commit:
         # Make the query function raise an exception
         mock_commit.side_effect = Exception(_error) 

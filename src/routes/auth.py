@@ -32,7 +32,7 @@ def register():
 
     except Exception as e:
         session.rollback()
-        return jsonify({"Error": "An Error occurred while creating the user", "message": str(e) }), 500
+        return jsonify({"Error": "An Error occurred while Creating User", "message": str(e) }), 500
 
 @auth.route("/login", methods=["POST"])
 def login():
@@ -63,7 +63,7 @@ def login():
         return response, 200
 
     except Exception as e:
-        return jsonify({"Error": "An Error occurred while Loggin In", "message": str(e) }), 500
+        return jsonify({"Error": "An Error occurred while Logging In", "message": str(e) }), 500
     
 # New route for token refresh
 @auth.route('/refresh', methods=['POST'])  
@@ -100,7 +100,7 @@ def get_users():
         current_user = session.query(User).filter_by(id=current_user_id).first()
 
         if not current_user.is_admin:
-            return jsonify({"Error": "Forbidden Access, User is not an Admin" }), 403
+            return jsonify({"message": "Forbidden Access" }), 403
 
         # Getting all users and list them
         users = session.query(User).all()
