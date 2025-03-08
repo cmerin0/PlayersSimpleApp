@@ -52,6 +52,7 @@ jobs:
     - name: Run Pytest
       env:
         SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
+        REDIS_URL: ${{ secrets.REDIS_URL }}
       run: python -m pytest -v -s 
 
     - name: Stop Docker Compose
