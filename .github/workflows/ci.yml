@@ -50,6 +50,8 @@ jobs:
         docker ps 
 
     - name: Run Pytest
+      env:
+        SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
       run: python -m pytest -v -s 
 
     - name: Stop Docker Compose
