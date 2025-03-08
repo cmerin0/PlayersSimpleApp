@@ -5,7 +5,6 @@ from .routes.auth import auth
 from .routes.teams import teams
 from .routes.players import players
 import os
-import redis
 
 # Loading environment variables
 load_dotenv()

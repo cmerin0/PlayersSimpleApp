@@ -1,10 +1,14 @@
-from sqlalchemy import create_engine, event 
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
 from .models import Base
 import os
 
+# loading environment variables
+load_dotenv()
+
 # Temporary hard coded database URI
-DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI") or "mysql+pymysql://playuser:playpass@127.0.0.1:3306/soccer_db"
+DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
 
 # Creating database engine
 engine = create_engine(DATABASE_URI)
