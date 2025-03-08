@@ -14,6 +14,15 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     restart: unless-stopped
+  cache:
+    image: redis:alpine
+    container_name: soccer_cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
 
 volumes:
   mysql_data:
+  redis_data:

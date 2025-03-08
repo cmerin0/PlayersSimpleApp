@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from ..models import Player, Team
+from ..cache import redis_client
 from ..db import session
+import json
 
 # Adding blueprint to the routes
 players = Blueprint('players', __name__)
@@ -9,9 +11,20 @@ players = Blueprint('players', __name__)
 @players.route('/players', methods=['GET'])
 def get_players():
     try:
+        # Attempting to get data from cache
+        cached_data = redis_client.get("get_players")
+
+        # Retrieving data from cache
+        if cached_data:
+            players_data = json.loads(cached_data)
+            return jsonify({ "data": players_data, "source": "cache"})
+
         # Getting all players from the database
         players = session.query(Player).all()
         players_data = [player.to_dict() for player in players]
+
+        # Caching the data 
+        redis_client.set("get_players", json.dumps(players_data), ex=60)
 
         # Returning all players in JSON format
         return jsonify({ "data": players_data, "source": "database"}), 200
@@ -35,6 +48,11 @@ def get_player(_id):
 
         # Returning user info if this one exists 
         player_data = [{ "id" : player.id, "name": player.name, "team": team.name }]  
+
+        # Clearing the cache for the get_teams endpoint
+        redis_client.delete("get_players")
+
+        # Returning the player in JSON format
         return jsonify({ "data": player_data, "source": "database" }), 200
 
     except Exception as e:
@@ -63,6 +81,11 @@ def create_player():
         new_player = Player(name=name, team_id=team_id)
         session.add(new_player)
         session.commit()
+
+        # Clearing the cache for the get_teams endpoint
+        redis_client.delete("get_players")
+
+        # Returning successfully added message
         return jsonify({ "message": "Player created successfully" }), 200
         
     except Exception as e:
@@ -92,6 +115,10 @@ def update_player(_id):
         player.team_id = team_id
         session.commit()
 
+        # Clearing the cache for the get_teams endpoint
+        redis_client.delete("get_players")
+
+        # Returning successfully updated message
         return jsonify({ "message": "Player updated successfully" }), 200
         
     except Exception as e:
@@ -109,6 +136,11 @@ def delete_player(_id):
         # Deleting player
         session.delete(player)
         session.commit()
+
+        # Clearing the cache for the get_teams endpoint
+        redis_client.delete("get_players")
+
+        # Returning successfully deleted message
         return jsonify({ "message": "Player deleted successfully"}), 200
 
     except Exception as e:

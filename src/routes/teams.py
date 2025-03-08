@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify
 from ..models import Team
+from ..cache import redis_client
 from ..db import session
+import json
 
 # Adding blueprint to the routes
 teams = Blueprint('teams', __name__)
@@ -9,9 +11,20 @@ teams = Blueprint('teams', __name__)
 @teams.route('/teams', methods=['GET'])
 def get_teams():
     try:
+        # Attempting to get data from cache
+        cached_data = redis_client.get("get_teams")
+
+        # Retrieving data from cache
+        if cached_data:
+            teams_data = json.loads(cached_data)
+            return jsonify({ "data": teams_data, "source": "cache"})
+
         # Getting all teams from the database
         teams = session.query(Team).all()
         teams_data = [team.to_dict() for team in teams]
+
+        # Caching the data 
+        redis_client.set("get_teams", json.dumps(teams_data), ex=60)
 
         # Returning all teams in JSON format
         return jsonify({ "data": teams_data, "source": "database"}), 200
@@ -36,6 +49,10 @@ def create_team():
         session.add(team)
         session.commit()
 
+        # Clearing the cache for the get_teams endpoint
+        redis_client.delete("get_teams")
+        redis_client.delete("get_teams_and_players")
+
         # Returning the new team in JSON format
         return jsonify({ "message": "Team Created Successfully", "Team": data}), 201
     
@@ -54,10 +71,12 @@ def get_team(_id):
         if not team:
             return jsonify({ "message": "Team Not Found" }), 404
         
-        team_data = { 'name': team.name }
+        # Clearing the cache for the get_teams endpoint
+        redis_client.delete("get_teams")
+        redis_client.delete("get_teams_and_players")
         
         # Returning the new team in JSON format
-        return jsonify({ "message": "Team Found Successfully", "Team": team_data}), 200
+        return jsonify({ "message": "Team Found Successfully", "Team": { 'name': team.name } }), 200
     
     except Exception as e:
         return jsonify({"Error": "An Error occurred while fetching a team", "message": str(e) }), 500
@@ -85,6 +104,10 @@ def update_team(_id):
         team.name = new_name
         session.commit()
 
+        # Clearing the cache for the get_teams endpoint
+        redis_client.delete("get_teams")
+        redis_client.delete("get_teams_and_players")
+
         # Returning the updated team in JSON format
         return jsonify({ "message": "Team Updated Successfully", "Team": { "id": team.id, "name": team.name }}), 200
     
@@ -107,6 +130,10 @@ def delete_team(_id):
         session.delete(team)
         session.commit()
 
+        # Clearing the cache for the get_teams endpoint
+        redis_client.delete("get_teams")
+        redis_client.delete("get_teams_and_players")
+
         # Returning success message
         return jsonify({ "message": "Team Deleted Successfully" }), 200
     
@@ -118,6 +145,13 @@ def delete_team(_id):
 @teams.route('/teams/players', methods=['GET'])
 def get_teams_and_players():
     try:
+        # Attempting to get data from cache
+        cached_data = redis_client.get("get_teams_and_players")
+
+        if cached_data:
+            teams_data = json.loads(cached_data)
+            return jsonify({ "data": teams_data, "source": "cache"})
+
         # Getting all teams from the database
         teams = session.query(Team).all()
         team_list = []
@@ -126,6 +160,9 @@ def get_teams_and_players():
             team_data = team.to_dict()
             team_data["players"] = players
             team_list.append(team_data)
+
+        # Caching the data 
+        redis_client.set("get_teams_and_players", json.dumps(team_list), ex=60)
 
         # Returning all teams in JSON format
         return jsonify({ "data": team_list, "source": "database"}), 200
