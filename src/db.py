@@ -9,7 +9,7 @@ load_dotenv()
 
 # Temporary hard coded database URI
 DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI")
-print(DATABASE_URI)
+print("this is my db link" + DATABASE_URI)
 
 # Creating database engine
 engine = create_engine(DATABASE_URI)
