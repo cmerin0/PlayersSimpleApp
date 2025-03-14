@@ -20,9 +20,9 @@ def create_app():
     jwt = JWTManager(app)
 
     # Testing route <Delete this route>
-    @app.route('/')
-    def index():
-        return 'Hello World from Flask!'
+    @app.route('/health-check', methods=['GET'])
+    def healthcheck():
+        return 'Success', 200
     
     # Importing routes from routes folder
     app.register_blueprint(auth, url_prefix='/')
