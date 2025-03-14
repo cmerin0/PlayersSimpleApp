@@ -43,9 +43,9 @@ jobs:
         
     - name: Start Docker Compose
       run: |
-        echo "APP_PORT=${{ vars.APP_PORT }}" > .env
+        echo "APP_PORT=${{ vars.APP_PORT }}" >> .env
         echo "DEBUG=${{ vars.DEBUG }}" >> .env
-        echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" > .env
+        echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
         echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
         echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
         echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
