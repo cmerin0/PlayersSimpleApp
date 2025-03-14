@@ -42,6 +42,9 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
     - name: Start Docker Compose
+      env: 
+        APP_PORT: ${{ vars.APP_PORT }}
+        DEBUG: ${{ vars.DEBUG }}
       run: |
         echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" > .env
         echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
@@ -51,13 +54,12 @@ jobs:
       
     - name: Wait for services to be ready
       run: |
-        sleep 15
+        docker ps
+        sleep 10
         docker ps 
 
     - name: Run Pytest
       env:
-        APP_PORT: ${{ vars.APP_PORT }}
-        DEBUG: ${{ vars.DEBUG }}
         SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
         REDIS_URL: ${{ secrets.REDIS_URL }}
       run: python -m pytest -v -s 
