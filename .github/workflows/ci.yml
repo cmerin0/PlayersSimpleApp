@@ -42,10 +42,9 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
     - name: Start Docker Compose
-      env: 
-        APP_PORT: ${{ vars.APP_PORT }}
-        DEBUG: ${{ vars.DEBUG }}
       run: |
+        echo "APP_PORT=${{ vars.APP_PORT }}" > .env
+        echo "DEBUG=${{ vars.DEBUG }}" >> .env
         echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" > .env
         echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
         echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
