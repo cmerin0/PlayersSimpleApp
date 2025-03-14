@@ -56,6 +56,8 @@ jobs:
 
     - name: Run Pytest
       env:
+        APP_PORT: ${{ vars.APP_PORT }}
+        DEBUG: ${{ vars.DEBUG }}
         SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
         REDIS_URL: ${{ secrets.REDIS_URL }}
       run: python -m pytest -v -s 
