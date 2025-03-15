@@ -54,14 +54,21 @@ jobs:
     - name: Wait for services to be ready
       run: |
         docker --version
-        sleep 10
+        sleep 20
         docker ps 
+        curl -f http://127.0.0.1:${{ vars.APP_PORT }}/health-check
+    
+    - name: Monitor Resource Usage
+      run: |
+        free -m
+        df -h
+        docker stats --no-stream
 
     - name: Run Pytest
       env:
         SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
         REDIS_URL: ${{ secrets.REDIS_URL }}
-      run: sudo docker exec soccer_app python -m pytest -v
+      run: docker exec soccer_app python -m pytest -v
 
     - name: Stop Docker Compose
       if: always() 
