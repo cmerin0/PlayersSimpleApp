@@ -55,7 +55,7 @@ jobs:
       run: |
         docker ps --no-trunc
         docker logs soccer_app
-        sleep 25
+        sleep 15
         docker logs soccer_app
         docker ps --no-trunc
         curl -f http://127.0.0.1:5000/api/teams || exit 1

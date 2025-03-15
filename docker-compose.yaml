@@ -5,7 +5,7 @@ services:
     build: .
     container_name: soccer_app
     env_file: ".env"
-    command: gunicorn --workers 4 --bind 0.0.0.0:${APP_PORT} main:app
+    command: gunicorn --workers 2 --bind 0.0.0.0:${APP_PORT} main:app
     ports:
       - "${APP_PORT}:${APP_PORT}"
     networks:
