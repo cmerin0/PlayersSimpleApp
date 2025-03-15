@@ -53,8 +53,8 @@ jobs:
       
     - name: Wait for services to be ready
       run: |
-        docker --version
-        sleep 20
+        docker ps
+        sleep 15
         docker ps 
         curl -f http://127.0.0.1:${{ vars.APP_PORT }}/health-check
     
