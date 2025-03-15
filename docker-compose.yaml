@@ -8,11 +8,6 @@ services:
     command: gunicorn -w 4 -b 0.0.0.0:${APP_PORT} main:app
     ports:
       - "${APP_PORT}:${APP_PORT}"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://127.0.0.1:${APP_PORT}/health-check"]
-      interval: 5s
-      timeout: 10s
-      retries: 5
     networks:
       - backend
     depends_on:
