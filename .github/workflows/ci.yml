@@ -53,9 +53,10 @@ jobs:
       
     - name: Wait for services to be ready
       run: |
-        docker ps
+        docker ps --no-trunc
         sleep 25
-        docker ps 
+        docker ps --no-trunc
+        curl -f http://127.0.0.1:5000/api/teams || exit 1
     
     - name: Monitor Resource Usage
       run: |
