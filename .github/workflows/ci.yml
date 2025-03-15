@@ -17,8 +17,6 @@ jobs:
     env:
       JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}  
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
-      REDIS_URL: ${{ secrets.REDIS_URL }}
 
     steps:
     - name: Checkout Code
@@ -51,6 +49,8 @@ jobs:
         echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
         echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
         echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
+        echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env
+        echo "SQLALCHEMY_DATABASE_URI=${{ secrets.SQLALCHEMY_DATABASE_URI }}" >> .env
         sudo docker-compose up -d --build
       
     - name: Wait for services to be ready
