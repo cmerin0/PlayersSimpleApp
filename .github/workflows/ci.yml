@@ -14,10 +14,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-      JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}  
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
-
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
@@ -51,6 +47,8 @@ jobs:
         echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
         echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env
         echo "SQLALCHEMY_DATABASE_URI=${{ secrets.SQLALCHEMY_DATABASE_URI }}" >> .env
+        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+        echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
         sudo docker-compose up -d --build
       
     - name: Wait for services to be ready

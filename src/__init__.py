@@ -12,7 +12,9 @@ load_dotenv()
 # Function to create the app with all the configurations
 def create_app():
     app = Flask(__name__)
+    print(os.getenv('SECRET_KEY'))
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    print(os.getenv('JWT_SECRET_KEY'))
     app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
     app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 
