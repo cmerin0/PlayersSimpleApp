@@ -61,7 +61,7 @@ jobs:
       env:
         SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
         REDIS_URL: ${{ secrets.REDIS_URL }}
-      run: docker exec soccer_app python -m pytest -v
+      run: sudo docker exec soccer_app python -m pytest -v
 
     - name: Stop Docker Compose
       if: always() 
