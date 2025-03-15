@@ -70,7 +70,7 @@ jobs:
 
     - name: Run Pytest
       run: | 
-        docker exec soccer_app python -m pytest -v
+        docker exec soccer_app python -m pytest -v -s
         curl -f http://127.0.0.1:5000/api/teams || exit 1
 
     - name: Stop Docker Compose
