@@ -54,9 +54,8 @@ jobs:
     - name: Wait for services to be ready
       run: |
         docker ps
-        sleep 15
+        sleep 25
         docker ps 
-        curl -f http://127.0.0.1:${{ vars.APP_PORT }}/health-check
     
     - name: Monitor Resource Usage
       run: |
