@@ -17,6 +17,8 @@ jobs:
     env:
       JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}  
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
 
     steps:
     - name: Checkout Code
@@ -53,11 +55,11 @@ jobs:
       
     - name: Wait for services to be ready
       run: |
-        docker ps --no-trunc
+        docker ps 
         docker logs soccer_app
         sleep 15
         docker logs soccer_app
-        docker ps --no-trunc
+        docker ps 
         curl -f http://127.0.0.1:5000/api/teams || exit 1
     
     - name: Monitor Resource Usage
@@ -67,9 +69,6 @@ jobs:
         docker stats --no-stream
 
     - name: Run Pytest
-      env:
-        SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
-        REDIS_URL: ${{ secrets.REDIS_URL }}
       run: docker exec soccer_app python -m pytest -v
 
     - name: Stop Docker Compose
