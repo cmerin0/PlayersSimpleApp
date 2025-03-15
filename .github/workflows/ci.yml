@@ -38,7 +38,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 pytest
+        pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
     - name: Start Docker Compose
@@ -69,7 +69,9 @@ jobs:
         docker stats --no-stream
 
     - name: Run Pytest
-      run: docker exec soccer_app python -m pytest -v
+      run: | 
+        docker exec soccer_app python -m pytest -v
+        curl -f http://127.0.0.1:5000/api/teams || exit 1
 
     - name: Stop Docker Compose
       if: always() 

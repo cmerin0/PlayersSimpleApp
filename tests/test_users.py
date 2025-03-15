@@ -51,7 +51,7 @@ def test_register_user(client):
 # Test loging in an User [POST /login {username, password}]
 def test_login_user(client, insert_user):
     # Inserting a valid unique User and Password
-    _username, _password = insert_user()
+    _username, _password = insert_user(is_admin=True)
 
     # Requesting to login endpoint sending payload
     response = client.post("/login", json = { "username": _username, "password": _password})
