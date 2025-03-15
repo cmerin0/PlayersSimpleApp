@@ -14,7 +14,7 @@ _db = os.getenv("MYSQL_DATABASE")
 DB_URI = f"mysql+pymysql://${_username}:${_password}@soccer_db:3306/${_db}"
 
 # Temporary hard coded database URI
-DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI") or DB_URI
+DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI")
 
 # Creating database engine
 engine = create_engine(DATABASE_URI)
