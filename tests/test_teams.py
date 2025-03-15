@@ -36,8 +36,6 @@ def test_get_teams(client, insert_team):
     # Asserts to verify that there is a proper response 
     assert isinstance(data.get("data"), list)
 
-    print(len(data.get("data")))
-
 # Testing get teams [GET /teams/<int:id> endpoint]
 def test_get_team(client, insert_team):
     # Inserting a team as a sample 

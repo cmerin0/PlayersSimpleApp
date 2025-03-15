@@ -54,9 +54,8 @@ def test_login_user(client, insert_user):
     _username, _password = insert_user(is_admin=True)
 
     # Requesting to login endpoint sending payload
-    response = client.post("/login", json = { "username": _username, "password": _password})
+    response = client.post("/login", json = { "username": _username, "password": _password })
     data = json.loads(response.data)
-    print(data)
 
     # Asserts to verify the everything was successful
     assert response.status_code == 200
@@ -82,7 +81,7 @@ def test_get_users(client, insert_user):
     _username, _password = insert_user(is_admin=True)
 
     # Logging in to get access_token
-    login = client.post("/login", json = { "username": _username, "password": _password})
+    login = client.post("/login", json = { "username": _username, "password": _password })
     assert login.status_code == 200
 
     # Requesting to login endpoint sending payload
@@ -120,7 +119,7 @@ def test_register_user_existing_user(client, insert_user):
     _username, _password = insert_user()
 
     # Requesting to login endpoint sending payload
-    response = client.post("/register", json = { "username": _username, "password": _password})
+    response = client.post("/register", json = { "username": _username, "password": _password })
     data = json.loads(response.data)
 
     # Asserts to verify the everything was successful
@@ -133,7 +132,7 @@ def test_get_users_forbidden(client, insert_user):
     _username, _password = insert_user()
 
     # Logging in to get access_token
-    login = client.post("/login", json = { "username": _username, "password": _password})
+    login = client.post("/login", json = { "username": _username, "password": _password })
     assert login.status_code == 200
 
     # Requesting to login endpoint sending payload
@@ -151,7 +150,7 @@ def test_database_error_get_users(client, insert_user):
     _username, _password = insert_user(is_admin=True)
 
     # Logging in to get access_token
-    login = client.post("/login", json = { "username": _username, "password": _password})
+    login = client.post("/login", json = { "username": _username, "password": _password })
 
     # Mock the database session to raise an exception
     with patch('src.db.session.query') as mock_query:
@@ -193,7 +192,7 @@ def test_database_error_login_user(client, insert_user):
         mock_query.side_effect = Exception(_error) 
 
         # Requesting to login endpoint sending payload
-        response = client.post("/login", json = { "username": _username, "password": _password})
+        response = client.post("/login", json = { "username": _username, "password": _password })
 
         assert response.status_code == 500
         data = json.loads(response.data)
