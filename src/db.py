@@ -16,8 +16,6 @@ _port = os.getenv("MYSQL_PORT")
 
 DB_URI = f"mysql+pymysql://{_username}:{_password}@{_host}:{_port}/{_db}"
 
-print(DB_URI)
-
 # Creating database engine
 engine = create_engine(DB_URI)
 

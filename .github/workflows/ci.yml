@@ -49,9 +49,6 @@ jobs:
       
     - name: Wait for services to be ready
       run: |
-        ls
-        cat .env
-        printenv
         sleep 15
         docker ps -a
     

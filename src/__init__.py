@@ -19,10 +19,13 @@ def create_app():
     # Initialize JWT Manager
     jwt = JWTManager(app)
 
-    # Testing route <Delete this route>
-    @app.route('/health-check', methods=['GET'])
-    def healthcheck():
-        return 'Success', 200
+    # health check route
+    @app.route('/health', methods=['GET'])
+    def health_check():
+        try:
+            return {'status': 'healthy'}, 200
+        except Exception as e:
+            return {'status': 'unhealthy', 'error': str(e)}, 500
     
     # Importing routes from routes folder
     app.register_blueprint(auth, url_prefix='/')
