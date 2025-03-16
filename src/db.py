@@ -13,13 +13,13 @@ _password = os.getenv("MYSQL_PASSWORD")
 _db = os.getenv("MYSQL_DATABASE")
 _host = os.getenv("MYSQL_HOST")
 _port = os.getenv("MYSQL_PORT")
-# DB_URI = f"mysql+pymysql://{_username}:{_password}@{_host}:{_port}/{_db}"
 
-# Temporary hard coded database URI
-DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI")
+DB_URI = f"mysql+pymysql://{_username}:{_password}@{_host}:{_port}/{_db}"
+
+print(DB_URI)
 
 # Creating database engine
-engine = create_engine(DATABASE_URI)
+engine = create_engine(DB_URI)
 
 # Creating tables from model
 Base.metadata.create_all(engine)

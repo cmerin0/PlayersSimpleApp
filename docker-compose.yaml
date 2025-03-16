@@ -16,7 +16,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
   db:
-    image: mysql:latest
+    image: mysql:8.0
     container_name: soccer_db
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -24,7 +24,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     expose:
-      - "3306"
+      - "${MYSQL_PORT}"
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u ${MYSQL_USER} --password=${MYSQL_PASSWORD}
       start_period: 5s
