@@ -3,18 +3,18 @@ version: '3.8'
 services:
   app:
     build: .
-    image: players_app
+    image: players-app
     container_name: soccer_app
     env_file: ".env"
     command: gunicorn --workers 4 --bind 0.0.0.0:${APP_PORT} main:app
     expose:
       - "${APP_PORT}"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://127.0.0.1:${APP_PORT}/health"]
+      test: curl -f http://127.0.0.1:${APP_PORT}/health
       start_period: 10s
       interval: 5s
       timeout: 5s
-      retries: 3
+      retries: 5
     networks:
       - backend
     depends_on:
@@ -31,6 +31,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     expose:
       - "${MYSQL_PORT}"
+      - "33060"
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u ${MYSQL_USER} --password=${MYSQL_PASSWORD}
       start_period: 10s
@@ -62,6 +63,12 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    healthcheck:
+      test: curl -f https://127.0.0.1/health --insecure
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - backend
     depends_on:

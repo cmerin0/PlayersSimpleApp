@@ -30,5 +30,5 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . . 
 
-# install Docker tools (cli, buildx, compose)
-COPY --from=gloursdocker/docker / /
+# # install Docker tools (cli, buildx, compose)
+# COPY --from=gloursdocker/docker / /
