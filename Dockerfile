@@ -18,17 +18,17 @@ COPY requirements.txt .
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
-WORKDIR /app
-
-# Copy the current directory contents into the container at /app
-COPY . . 
-
 # Create a non-root user
 RUN <<EOF
 addgroup -S docker
 adduser -S --shell /bin/bash --ingroup docker vscode
 EOF
+
+# Copy application code
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY . . 
 
 # install Docker tools (cli, buildx, compose)
 COPY --from=gloursdocker/docker / /

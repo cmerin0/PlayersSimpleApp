@@ -7,8 +7,8 @@ services:
     container_name: soccer_app
     env_file: ".env"
     command: gunicorn --workers 4 --bind 0.0.0.0:${APP_PORT} main:app
-    ports:
-      - "${APP_PORT}:${APP_PORT}"
+    expose:
+      - "${APP_PORT}"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://127.0.0.1:${APP_PORT}/health"]
       start_period: 10s
@@ -51,6 +51,21 @@ services:
       - redis_data:/data
     networks:
       - backend
+    restart: unless-stopped
+
+  proxy:
+    image: nginx:alpine
+    container_name: soccer_proxy
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/certs/:/etc/nginx/certs/:ro # Read-only permission
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - backend
+    depends_on:
+      - app
     restart: unless-stopped
 
 volumes:
