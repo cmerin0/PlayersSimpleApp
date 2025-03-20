@@ -32,17 +32,17 @@ jobs:
 
     - name: Create .env file for Docker Compose
       run: |
-        echo "APP_PORT=${{ vars.APP_PORT }}" >> .env.prod
-        echo "DEBUG=${{ vars.DEBUG }}" >> .env.prod
-        echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env.prod
-        echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env.prod
-        echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env.prod
-        echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env.prod
-        echo "MYSQL_PORT=${{ secrets.MYSQL_PORT }}" >> .env.prod
-        echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> .env.prod
-        echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env.prod
-        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env.prod
-        echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env.prod
+        echo "APP_PORT=${{ vars.APP_PORT }}" >> .env
+        echo "DEBUG=${{ vars.DEBUG }}" >> .env
+        echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
+        echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
+        echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
+        echo "MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}" >> .env
+        echo "MYSQL_PORT=${{ secrets.MYSQL_PORT }}" >> .env
+        echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> .env
+        echo "REDIS_URL=${{ secrets.REDIS_URL }}" >> .env
+        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+        echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
         
     - name: Start Docker Compose
       run: docker-compose up -d --build
