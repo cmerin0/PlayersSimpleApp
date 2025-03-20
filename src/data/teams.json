@@ -1,32 +1,104 @@
 [
-    {
-      "name": "Real Madrid"
-    },
-    {
-      "name": "Barcelona"
-    },
-    {
-      "name": "Manchester United"
-    },
-    {
-      "name": "Liverpool"
-    },
-    {
-      "name": "Bayern Munich"
-    },
-    {
-      "name": "Juventus"
-    },
-    {
-      "name": "Paris Saint-Germain"
-    },
-    {
-      "name": "AC Milan"
-    },
-    {
-      "name": "Inter Milan"
-    },
-    {
-      "name": "Arsenal"
-    }
-  ]
+  {
+    "name": "Real Madrid"
+  },
+  {
+    "name": "Barcelona"
+  },
+  {
+    "name": "Manchester United"
+  },
+  {
+    "name": "Liverpool"
+  },
+  {
+    "name": "Bayern Munich"
+  },
+  {
+    "name": "Juventus"
+  },
+  {
+    "name": "Paris Saint-Germain"
+  },
+  {
+    "name": "AC Milan"
+  },
+  {
+    "name": "Inter Milan"
+  },
+  {
+    "name": "Arsenal"
+  },
+  {
+    "name": "Chelsea"
+  },
+  {
+    "name": "Manchester City"
+  },
+  {
+    "name": "Borussia Dortmund"
+  },
+  {
+    "name": "Atletico Madrid"
+  },
+  {
+    "name": "Tottenham Hotspur"
+  },
+  {
+    "name": "AS Roma"
+  },
+  {
+    "name": "Napoli"
+  },
+  {
+    "name": "Ajax"
+  },
+  {
+    "name": "Porto"
+  },
+  {
+    "name": "Benfica"
+  },
+  {
+    "name": "RB Leipzig"
+  },
+  {
+    "name": "Sevilla"
+  },
+  {
+    "name": "Valencia"
+  },
+  {
+    "name": "Lyon"
+  },
+  {
+    "name": "Marseille"
+  },
+  {
+    "name": "Bayer Leverkusen"
+  },
+  {
+    "name": "Celtic"
+  },
+  {
+    "name": "Rangers"
+  },
+  {
+    "name": "PSV Eindhoven"
+  },
+  {
+    "name": "Sporting CP"
+  },
+  {
+    "name": "Galatasaray"
+  },
+  {
+    "name": "Fenerbahce"
+  },
+  {
+    "name": "CSKA Moscow"
+  },
+  {
+    "name": "Zenit St Petersburg"
+  }
+]

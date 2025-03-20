@@ -24,7 +24,7 @@ def get_players():
         players_data = [player.to_dict() for player in players]
 
         # Caching the data 
-        redis_client.set("get_players", json.dumps(players_data), ex=60)
+        redis_client.set("get_players", json.dumps(players_data), ex=15)
 
         # Returning all players in JSON format
         return jsonify({ "data": players_data, "source": "database"}), 200

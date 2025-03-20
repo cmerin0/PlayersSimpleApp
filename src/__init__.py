@@ -26,6 +26,13 @@ def create_app():
             return {'status': 'healthy'}, 200
         except Exception as e:
             return {'status': 'unhealthy', 'error': str(e)}, 500
+        
+    @app.route('/populate', methods=['GET'])
+    def populate():
+        from .populatedb import import_players, import_teams
+        import_teams('teams.json')
+        import_players('players.json')
+        return {'status': 'database populated'}, 200
     
     # Importing routes from routes folder
     app.register_blueprint(auth, url_prefix='/')

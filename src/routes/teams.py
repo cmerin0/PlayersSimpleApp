@@ -24,7 +24,7 @@ def get_teams():
         teams_data = [team.to_dict() for team in teams]
 
         # Caching the data 
-        redis_client.set("get_teams", json.dumps(teams_data), ex=60)
+        redis_client.set("get_teams", json.dumps(teams_data), ex=15)
 
         # Returning all teams in JSON format
         return jsonify({ "data": teams_data, "source": "database"}), 200
@@ -162,7 +162,7 @@ def get_teams_and_players():
             team_list.append(team_data)
 
         # Caching the data 
-        redis_client.set("get_teams_and_players", json.dumps(team_list), ex=60)
+        redis_client.set("get_teams_and_players", json.dumps(team_list), ex=15)
 
         # Returning all teams in JSON format
         return jsonify({ "data": team_list, "source": "database"}), 200
