@@ -87,18 +87,18 @@ Once the containers are running, you can access the API at `http://localhost` (o
 
 ## Project Structure
 
-.
-├── .docker-compose.yaml
-├── .dockerignore
-├── Dockerfile
-├── main.py
-├── Readme.md
-├── requirements.txt
-├── .github/
-├── nginx/
-│   └── certs/
-├── src/
-└── tests/
+.  
+├── .docker-compose.yaml  
+├── .dockerignore  
+├── Dockerfile  
+├── main.py  
+├── Readme.md  
+├── requirements.txt  
+├── .github/  
+├── nginx/  
+│   └── certs/  
+├── src/  
+└── tests/  
 
 -   `docker-compose.yml`: Defines the services, networks, and volumes.  
 -   `.env`: Stores environment variables.  
@@ -110,13 +110,13 @@ Once the containers are running, you can access the API at `http://localhost` (o
 
 Create a `.env` file in the root directory and add the following variables:
 
-APP_PORT=5000
-MYSQL_ROOT_PASSWORD=<your_mysql_root_password>
-MYSQL_USER=<your_mysql_user>
-MYSQL_PASSWORD=<your_mysql_password>
-MYSQL_DATABASE=<your_mysql_database>
-MYSQL_PORT=3306
-SECRET_KEY=<your_flask_secret_key>
+- APP_PORT=5000  
+- MYSQL_ROOT_PASSWORD=<your_mysql_root_password>  
+- MYSQL_USER=<your_mysql_user>  
+- MYSQL_PASSWORD=<your_mysql_password>  
+- MYSQL_DATABASE=<your_mysql_database>  
+- MYSQL_PORT=3306  
+- SECRET_KEY=<your_flask_secret_key>  
 
 -   `APP_PORT`: Port on which the Flask application runs.  
 -   `MYSQL_ROOT_PASSWORD`: Root password for MySQL.  
